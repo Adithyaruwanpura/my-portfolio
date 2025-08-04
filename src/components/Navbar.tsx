@@ -14,10 +14,10 @@ export default function Navbar() {
 
   const toggleMode = () => {
     setMode(mode === 'frontend' ? 'backend' : 'frontend');
-    document.body.classList.toggle('backend-mode'); // optional global theme class
+    document.body.classList.toggle('backend-mode'); 
   };
 
-  // Intersection Observer to highlight active section
+  // highlight active section
   useEffect(() => {
     const sections = menuItems.map(section => document.getElementById(section.toLowerCase()));
     const observer = new IntersectionObserver(
@@ -73,7 +73,7 @@ export default function Navbar() {
         })}
       </nav>
 
-      {/* Desktop Lightbulb Mode Toggle */}
+      {/* Desktop Light bulb  Toggle */}
       <button
         onClick={toggleMode}
         className={`hidden md:flex ml-4 p-2 rounded-full transition-all duration-300
@@ -117,7 +117,7 @@ export default function Navbar() {
             );
           })}
 
-          {/* Mobile Lightbulb Toggle */}
+          {/* Mobile Light bulb Toggle */}
           <button
             onClick={toggleMode}
             className={`mt-4 p-3 rounded-full transition-all duration-300
