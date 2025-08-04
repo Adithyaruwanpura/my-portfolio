@@ -4,16 +4,40 @@ import BackgroundCanvas from './BackgroundCanvas';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { TypeAnimation } from 'react-type-animation';
+import { useEffect, useState } from 'react';
 
 export default function Hero() {
-  return (
-    <section id="home" className="relative min-h-screen w-full overflow-hidden">
-      {/* Background Canvas Layer */}
-      <div className="absolute inset-0 -z-10">
-        <BackgroundCanvas />
-      </div>
+  const [isBackendMode, setIsBackendMode] = useState(false);
 
-      {/* Foreground Content with internal glass effect */}
+  // Detect backend mode by body class
+  useEffect(() => {
+    const updateMode = () => {
+      setIsBackendMode(document.body.classList.contains('backend-mode'));
+    };
+    updateMode();
+
+    const observer = new MutationObserver(updateMode);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      id="home"
+      className="relative min-h-screen w-full overflow-hidden"
+      style={{
+        backgroundColor: isBackendMode ? '#0A0A23' : 'transparent', // Navy background in backend mode
+      }}
+    >
+      {/* Background Canvas: Only in frontend mode */}
+      {!isBackendMode && (
+        <div className="absolute inset-0 -z-10">
+          <BackgroundCanvas />
+        </div>
+      )}
+
+      {/* Foreground Content */}
       <div className="relative z-10 flex justify-center items-center min-h-screen px-6 md:px-20 py-24">
         {/* Glass-effect wrapper */}
         <div className="w-full max-w-7xl bg-bgNavy/75 backdrop-blur-sm rounded-2xl shadow-lg border border-[#59C3FF]/30 p-10 md:p-16">
@@ -27,17 +51,16 @@ export default function Hero() {
               className="flex-1 text-center md:text-left space-y-6"
             >
               <motion.h1
-  initial={{ opacity: 0, x: -30 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ delay: 0.5, duration: 1 }}
-  className="text-3xl md:text-6xl leading-tight tracking-tight"
->
-  <span className="block font-light text-gray-300">Hello, I’m</span>
-  <span className="text-neon font-extrabold drop-shadow-md">
-    Adithya <span className="text-neon">Ruwanpura</span>
-  </span>
-</motion.h1>
-
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="text-3xl md:text-6xl leading-tight tracking-tight"
+              >
+                <span className="block font-light text-gray-300">Hello, I’m</span>
+                <span className="text-neon font-extrabold drop-shadow-md">
+                  Adithya <span className="text-neon">Ruwanpura</span>
+                </span>
+              </motion.h1>
 
               <h2 className="text-xl md:text-2xl font-semibold text-textMain">
                 <TypeAnimation
@@ -77,7 +100,7 @@ export default function Hero() {
               </div>
             </motion.div>
 
-            {/* Right Side Image */}
+            {/* Right Side Image with Neon Ring */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -87,7 +110,11 @@ export default function Hero() {
               <div
                 className="absolute w-[520px] h-[520px] rounded-full border-[18px] border-[#00D8FF] opacity-100 z-0"
                 style={{
-                  boxShadow: `inset 0 0 30px #00D8FF, 0 0 40px #00D8FF`
+                  // Glow only in frontend mode
+                  boxShadow: isBackendMode
+                    ? 'inset 0 0 30px #00D8FF'
+                    : 'inset 0 0 30px #00D8FF, 0 0 40px #00D8FF',
+                  transition: '0.3s ease-in-out',
                 }}
               />
               <motion.div

@@ -1,42 +1,38 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Lightbulb } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [mode, setMode] = useState<'frontend' | 'backend'>('frontend');
 
   const menuItems = ['Home', 'About', 'Projects', 'Skills', 'Contact'];
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Intersection Observer logic
+  const toggleMode = () => {
+    setMode(mode === 'frontend' ? 'backend' : 'frontend');
+    document.body.classList.toggle('backend-mode'); // optional global theme class
+  };
+
+  // Intersection Observer to highlight active section
   useEffect(() => {
     const sections = menuItems.map(section => document.getElementById(section.toLowerCase()));
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.6, // 60% of section visible to be considered active
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    }, options);
-
-    sections.forEach(section => {
-      if (section) observer.observe(section);
-    });
-
-    return () => {
-      sections.forEach(section => {
-        if (section) observer.unobserve(section);
-      });
-    };
+    sections.forEach(section => section && observer.observe(section));
+    return () => sections.forEach(section => section && observer.unobserve(section));
   }, [menuItems]);
 
   const handleClick = (section: string) => {
@@ -45,7 +41,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full py-4 px-6 md:px-12 lg:px-24 flex justify-between items-center fixed top-0 z-50 bg-bgNavy bg-opacity-90 backdrop-blur-sm ">
+    <header className="w-full py-4 px-6 md:px-12 lg:px-24 flex justify-between items-center fixed top-0 z-50 bg-bgNavy bg-opacity-90 backdrop-blur-sm">
       <h1 className="font-bold text-xl md:text-2xl tracking-wide text-white">
         <span className="text-cyan-400 drop-shadow-sm">It&apos;s me</span>{' '}
         <span className="text-white drop-shadow-[0_1.5px_1.5px_rgba(0,255,255,0.8)] hover:drop-shadow-[0_3px_3px_rgba(0,255,255,1)] transition-all duration-300">
@@ -53,7 +49,7 @@ export default function Navbar() {
         </span>
       </h1>
 
-      {/* Desktop Nav */}
+      {/* Desktop Navigation */}
       <nav className="hidden md:flex gap-10 font-medium" aria-label="Main Navigation">
         {menuItems.map((section) => {
           const isActive = activeSection === section.toLowerCase();
@@ -77,9 +73,25 @@ export default function Navbar() {
         })}
       </nav>
 
-      {/* Mobile Menu Icon */}
+      {/* Desktop Lightbulb Mode Toggle */}
       <button
-        className="md:hidden text-white focus:outline-none"
+        onClick={toggleMode}
+        className={`hidden md:flex ml-4 p-2 rounded-full transition-all duration-300
+          ${mode === 'frontend'
+            ? 'bg-yellow-400 text-white shadow-[0_0_15px_#FFD700]'
+            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'}
+        `}
+        aria-label="Toggle Mode"
+      >
+        <Lightbulb
+          size={22}
+          className={`${mode === 'frontend' ? 'animate-pulse' : ''}`}
+        />
+      </button>
+
+      {/* Mobile Menu Button */}
+      <button
+        className="md:hidden text-white focus:outline-none ml-3"
         onClick={toggleMenu}
         aria-label="Toggle navigation"
       >
@@ -104,6 +116,22 @@ export default function Navbar() {
               </a>
             );
           })}
+
+          {/* Mobile Lightbulb Toggle */}
+          <button
+            onClick={toggleMode}
+            className={`mt-4 p-3 rounded-full transition-all duration-300
+              ${mode === 'frontend'
+                ? 'bg-yellow-400 text-white shadow-[0_0_15px_#FFD700]'
+                : 'bg-gray-600 text-gray-300 hover:bg-gray-500'}
+            `}
+            aria-label="Toggle Mode"
+          >
+            <Lightbulb
+              size={24}
+              className={`${mode === 'frontend' ? 'animate-pulse' : ''}`}
+            />
+          </button>
         </div>
       )}
     </header>
