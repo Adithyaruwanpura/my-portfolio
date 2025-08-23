@@ -56,19 +56,20 @@ export default function Projects() {
       >
         <div className="max-w-7xl mx-auto space-y-16">
         
-          <motion.h2
-            initial={{ opacity: 0, y: -30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className={`text-4xl md:text-5xl font-bold text-center drop-shadow-lg ${
-              isBackendMode ? 'text-green-400 ' : 'text-titleText'
-            }`}
-          >
-            My{' '}
-            <span className={isBackendMode ? 'text-green-500 ' : 'text-neon'}>
-              Projects
-            </span>
-          </motion.h2>
+         <motion.h2
+  initial={{ opacity: 0, y: -30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1 }}
+  className={`text-4xl md:text-5xl font-bold text-center drop-shadow-lg ${
+    isBackendMode ? 'text-green-400 font-mono' : 'text-titleText'
+  }`}
+>
+  My{' '}
+  <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-neon'}>
+    Projects
+  </span>
+</motion.h2>
+
 
         
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -137,7 +138,7 @@ export default function Projects() {
                   </div>
 
                 
-                
+
                   <div className="pt-4 flex gap-4">
                     {project.live && (
                       <a

@@ -49,16 +49,16 @@ export default function About() {
             transition={{ duration: 1 }}
             className="flex-1 space-y-6"
           >
-            <h2
-              className={`text-4xl md:text-5xl font-bold drop-shadow-lg ${
-                isBackendMode ? 'text-green-400' : 'text-titleText'
-              }`}
-            >
-              About{' '}
-              <span className={isBackendMode ? 'text-green-500' : 'text-neon'}>
-                Me
-              </span>
-            </h2>
+       <h2
+  className={`text-4xl md:text-5xl font-bold drop-shadow-lg ${
+    isBackendMode ? 'text-green-400 font-mono' : 'text-titleText'
+  }`}
+>
+  About{' '}
+  <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-neon'}>
+    Me
+  </span>
+</h2>
 
             <p
               className={`leading-relaxed text-lg max-w-2xl ${
