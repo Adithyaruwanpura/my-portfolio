@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import './globals.css';
-
+import { ModeProvider } from '@/context/ModeContext';
 
 export const metadata: Metadata = {
   title: "Adithya Ruwanpura | Portfolio",
@@ -15,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased font-poppins bg-bgNavy text-textMain">
-        {children}
+        <ModeProvider>
+          {children}
+        </ModeProvider>
       </body>
     </html>
   );

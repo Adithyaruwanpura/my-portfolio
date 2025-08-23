@@ -68,7 +68,7 @@ export default function FloatingBot() {
   const [cuteQuoteIndex, setCuteQuoteIndex] = useState(0);
   const [showQuote, setShowQuote] = useState(false);
 
-  // Create audio object once
+ 
   const popSound = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     popSound.current = new Audio('/pop.mp3');
@@ -78,7 +78,7 @@ export default function FloatingBot() {
     setMessages(prev => [...prev, { from: isFromUser ? 'user' : 'bot', text }]);
   };
 
-  // Auto-scroll to bottom on new message
+ 
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTo({
@@ -88,9 +88,9 @@ export default function FloatingBot() {
     }
   }, [messages]);
 
-  // Handle Q&A interaction with sound
+ 
   const handleQuestionClick = (faq: (typeof portfolioFAQ)[number]) => {
-    // Play pop sound on click
+   
     if (popSound.current) {
       popSound.current.currentTime = 0;
       popSound.current.play();
@@ -111,19 +111,19 @@ export default function FloatingBot() {
     }, 1200);
   };
 
-  // Cute Quotes Timer
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCuteQuoteIndex((prev) => (prev + 1) % cuteQuotes.length);
       setShowQuote(true);
-      setTimeout(() => setShowQuote(false), 4000); // Hide after 4s
-    }, 20000); // Every 20s
+      setTimeout(() => setShowQuote(false), 4000); 
+    }, 20000); 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <>
-      {/* Floating Bot Button */}
+      
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -136,7 +136,7 @@ export default function FloatingBot() {
         >
           <BsRobot className="text-white text-2xl animate-pulse" />
 
-          {/* Cute Quote Bubble */}
+          
           {showQuote && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -156,14 +156,14 @@ export default function FloatingBot() {
         </button>
       </motion.div>
 
-      {/* Chat Popup */}
+     
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           className="fixed bottom-24 right-8 z-50 w-80 max-w-full bg-bgNavy rounded-2xl shadow-xl border border-divider flex flex-col"
         >
-          {/* Header */}
+         
           <div className="flex justify-between items-center px-4 py-3 border-b border-divider rounded-t-2xl">
             <h3 className="text-white font-semibold text-lg flex items-center gap-2">
               Adhi <BsRobot />
@@ -177,7 +177,7 @@ export default function FloatingBot() {
             </button>
           </div>
 
-          {/* Question List */}
+       
           <div className="px-4 pt-3 pb-1 space-y-2">
             {portfolioFAQ.map((faq, i) => (
               <button
@@ -190,7 +190,7 @@ export default function FloatingBot() {
             ))}
           </div>
 
-          {/* Messages */}
+          
           <div
             ref={chatRef}
             className="flex-1 overflow-y-auto px-4 py-3 space-y-3 max-h-72 scrollbar-thin scrollbar-thumb-neon scrollbar-track-bgNavy"
@@ -213,7 +213,7 @@ export default function FloatingBot() {
               </div>
             ))}
 
-            {/* Typing indicator */}
+           
             {isTyping && (
               <div className="flex justify-start">
                 <div className="rounded-lg px-4 py-2 max-w-[40%] bg-gradient-to-r from-neon to-primaryBlue text-bgNavy animate-pulse select-none">

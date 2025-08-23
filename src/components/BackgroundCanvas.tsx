@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import { useMode } from '@/context/ModeContext';
 
 interface Particle {
   x: number;
@@ -11,6 +12,9 @@ interface Particle {
 
 export default function BackgroundCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { mode } = useMode();
+  const isBackendMode = mode === 'backend';
+
   const particles: Particle[] = [];
   const numParticles = 100;
   const maxDistance = 120;
@@ -22,8 +26,12 @@ export default function BackgroundCanvas() {
     const ctx = canvas?.getContext('2d');
     if (!canvas || !ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     for (let i = 0; i < numParticles; i++) {
       particles.push({
@@ -38,17 +46,18 @@ export default function BackgroundCanvas() {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
     window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('resize', handleResize);
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (isBackendMode) {
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, '#0A0A23');
+        gradient.addColorStop(1, '#000000');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
 
       particles.forEach((p, i) => {
         p.x += p.vx;
@@ -60,38 +69,43 @@ export default function BackgroundCanvas() {
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 80) {
+        if (!isBackendMode && dist < 80) {
           p.vx -= dx * 0.0005;
           p.vy -= dy * 0.0005;
         }
 
-        // Glowing particle point
         ctx.beginPath();
         ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-        ctx.shadowColor = '#59C3FF';
-        ctx.shadowBlur = 10; // soft glow
-        ctx.fillStyle = '#59C3FF';
+        if (isBackendMode) {
+          ctx.fillStyle = '#1E293B';
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.fillStyle = '#59C3FF';
+          ctx.shadowColor = '#59C3FF';
+          ctx.shadowBlur = 10;
+        }
         ctx.fill();
-        ctx.shadowBlur = 0; // reset
         ctx.closePath();
 
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        if (!isBackendMode) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < maxDistance) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(89, 195, 255, ${1 - distance / maxDistance})`;
-            ctx.lineWidth = 1;
-            ctx.shadowColor = '#59C3FF';
-            ctx.shadowBlur = 4; // glow on lines
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-            ctx.closePath();
+            if (distance < maxDistance) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(89, 195, 255, ${1 - distance / maxDistance})`;
+              ctx.lineWidth = 1;
+              ctx.shadowColor = '#59C3FF';
+              ctx.shadowBlur = 4;
+              ctx.stroke();
+              ctx.shadowBlur = 0;
+              ctx.closePath();
+            }
           }
         }
       });
@@ -103,9 +117,9 @@ export default function BackgroundCanvas() {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', resizeCanvas);
     };
-  }, []);
+  }, [isBackendMode]);
 
   return (
     <canvas

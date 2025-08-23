@@ -22,7 +22,7 @@ export default function Footer() {
                  py-4 px-6 md:px-12 lg:px-24 flex flex-col"
     >
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
-        {/* Left Side - Name & Tagline */}
+     
         <div className="text-center md:text-left space-y-1 flex-1">
           <h2 className="text-lg font-bold text-white">Adithya Ruwanpura</h2>
           <p className="text-sm text-white/80">
@@ -30,9 +30,9 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Right Side - Social Icons + Back to Top */}
+       
         <div className="flex items-center gap-6 flex-1 justify-end">
-          {/* Social Icons */}
+          
           <div className="flex items-center gap-3 md:gap-4">
             {[
               {
@@ -81,7 +81,7 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Neon Back to Top Arrow */}
+         
           <motion.button
             onClick={scrollToTop}
             whileHover={{ y: -6, rotate: -15 }}
@@ -94,7 +94,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* copyright text */}
+     
       <div className="mt-6 text-center text-white text-sm select-none">
         © {new Date().getFullYear()} Adithya Ruwanpura. All rights reserved.
       </div>

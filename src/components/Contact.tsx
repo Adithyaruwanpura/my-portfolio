@@ -12,7 +12,7 @@ import {
 } from 'react-icons/fa';
 import { SiThreads } from 'react-icons/si';
 import BackgroundCanvas from './BackgroundCanvas';
-import Image from 'next/image'; // Make sure you're using Next.js or include Image component
+import Image from 'next/image'; 
 
 const socialLinks = [
   { Icon: FaLinkedinIn, href: 'https://linkedin.com/in/your-profile', label: 'LinkedIn' },
@@ -29,15 +29,15 @@ export default function Contact() {
       id="contact"
       className="relative w-full min-h-screen px-6 md:px-20 py-24 overflow-hidden"
     >
-      {/* Background Canvas */}
+      
       <div className="absolute inset-y-0 left-6 right-6 md:left-20 md:right-20 rounded-3xl pointer-events-none -z-10">
         <BackgroundCanvas />
       </div>
 
-      {/* Contact Wrapper */}
+    
       <div className="relative bg-bgNavy text-white rounded-3xl px-8 py-12 shadow-lg">
         <div className="max-w-6xl mx-auto space-y-16">
-          {/* Title */}
+        
           <motion.div
             initial={{ opacity: 0, y: -40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -52,16 +52,16 @@ export default function Contact() {
             </p>
           </motion.div>
 
-          {/* Form + Info */}
+         
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Contact Info + Social Links */}
+          
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 1 }}
               className="space-y-6"
             >
-              {/* Avatar */}
+            
               <div className="flex justify-center md:justify-start">
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-neon shadow-lg">
                   <Image
@@ -74,7 +74,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Contact Info */}
+             
               {[
                 {
                   icon: <Mail className="w-6 h-6 text-neon" />,
@@ -101,7 +101,7 @@ export default function Contact() {
                 </div>
               ))}
 
-              {/* Social Links */}
+             
               <div className="mt-10 flex flex-wrap gap-6">
                 {socialLinks.map(({ Icon, href, label }) => (
                   <a
@@ -118,7 +118,7 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            {/* Contact Form */}
+            
             <motion.form
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
