@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin } from 'lucide-react';
-
 import {
   FaLinkedinIn,
   FaInstagram,
@@ -12,7 +11,8 @@ import {
 } from 'react-icons/fa';
 import { SiThreads } from 'react-icons/si';
 import BackgroundCanvas from './BackgroundCanvas';
-import Image from 'next/image'; 
+import Image from 'next/image';
+import { useMode } from '@/context/ModeContext';
 
 const socialLinks = [
   { Icon: FaLinkedinIn, href: 'https://linkedin.com/in/your-profile', label: 'LinkedIn' },
@@ -24,18 +24,23 @@ const socialLinks = [
 ];
 
 export default function Contact() {
+  const { mode } = useMode();
+  const isBackendMode = mode === 'backend';
+
   return (
     <section
       id="contact"
       className="relative w-full min-h-screen px-6 md:px-20 py-24 overflow-hidden"
     >
-      
       <div className="absolute inset-y-0 left-6 right-6 md:left-20 md:right-20 rounded-3xl pointer-events-none -z-10">
         <BackgroundCanvas />
       </div>
 
-    
-      <div className="relative bg-bgNavy text-white rounded-3xl px-8 py-12 shadow-lg">
+      <div
+        className={`relative rounded-3xl px-8 py-12 shadow-lg transition-colors duration-500 ${
+          isBackendMode ? 'bg-[#0A0A23] text-white font-mono' : 'bg-bgNavy text-white'
+        }`}
+      >
         <div className="max-w-6xl mx-auto space-y-16">
         
           <motion.div
@@ -44,26 +49,33 @@ export default function Contact() {
             transition={{ duration: 1 }}
             className="text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-titleText drop-shadow-lg">
-              Let’s <span className="text-neon">Connect</span>
+            <h2
+              className={`text-4xl md:text-5xl font-bold drop-shadow-lg ${
+                isBackendMode ? 'text-green-400 font-mono' : 'text-titleText'
+              }`}
+            >
+              Let’s{' '}
+              <span className={isBackendMode ? 'text-green-500 font-mono' : 'text-neon'}>
+                Connect
+              </span>
             </h2>
-            <p className="text-textMain mt-4 text-lg max-w-xl mx-auto">
+            <p className={`mt-4 text-lg max-w-xl mx-auto ${isBackendMode ? 'text-white font-mono' : 'text-textMain'}`}>
               Whether you have an idea, a project, or just want to say hi — I’d love to hear from you!
             </p>
           </motion.div>
 
-         
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          
+           
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 1 }}
               className="space-y-6"
             >
-            
               <div className="flex justify-center md:justify-start">
-                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-neon shadow-lg">
+                <div className={`w-32 h-32 rounded-full overflow-hidden border-4 shadow-lg ${
+                  isBackendMode ? 'border-green-400' : 'border-neon'
+                }`}>
                   <Image
                     src="/avatars.svg"
                     alt="Adithya Avatar"
@@ -74,29 +86,24 @@ export default function Contact() {
                 </div>
               </div>
 
-             
-              {[
-                {
-                  icon: <Mail className="w-6 h-6 text-neon" />,
-                  label: 'Email',
-                  value: 'adithya@example.com',
-                },
-                {
-                  icon: <Phone className="w-6 h-6 text-neon" />,
-                  label: 'Phone',
-                  value: '+94 77 123 4567',
-                },
-                {
-                  icon: <MapPin className="w-6 h-6 text-neon" />,
-                  label: 'Location',
-                  value: 'Colombo, Sri Lanka',
-                },
-              ].map((item, i) => (
+              {[{
+                icon: <Mail className={`w-6 h-6 ${isBackendMode ? 'text-green-400' : 'text-neon'}`} />,
+                label: 'Email',
+                value: 'adithya@example.com',
+              },{
+                icon: <Phone className={`w-6 h-6 ${isBackendMode ? 'text-green-400' : 'text-neon'}`} />,
+                label: 'Phone',
+                value: '+94 77 123 4567',
+              },{
+                icon: <MapPin className={`w-6 h-6 ${isBackendMode ? 'text-green-400' : 'text-neon'}`} />,
+                label: 'Location',
+                value: 'Colombo, Sri Lanka',
+              }].map((item, i) => (
                 <div key={i} className="flex items-start gap-4">
                   <div className="mt-1">{item.icon}</div>
                   <div>
-                    <p className="text-titleText font-semibold">{item.label}</p>
-                    <p className="text-textMain">{item.value}</p>
+                    <p className={`${isBackendMode ? 'text-white font-mono' : 'text-titleText font-semibold'}`}>{item.label}</p>
+                    <p className={`${isBackendMode ? 'text-white font-mono' : 'text-textMain'}`}>{item.value}</p>
                   </div>
                 </div>
               ))}
@@ -110,7 +117,9 @@ export default function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="text-neon text-2xl hover:text-primaryBlue transition-colors duration-300"
+                    className={`text-2xl transition-colors duration-300 ${
+                      isBackendMode ? 'text-green-400 hover:text-green-500' : 'text-neon hover:text-primaryBlue'
+                    }`}
                   >
                     <Icon />
                   </a>
@@ -118,7 +127,7 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            
+           
             <motion.form
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -132,24 +141,40 @@ export default function Contact() {
               <input
                 type="text"
                 placeholder="Your Name"
-                className="w-full bg-transparent border border-divider px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon"
+                className={`w-full bg-transparent border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 ${
+                  isBackendMode
+                    ? 'border-green-400 text-white placeholder-white focus:ring-green-400 font-mono'
+                    : 'border-divider text-white placeholder-gray-400 focus:ring-neon'
+                }`}
                 required
               />
               <input
                 type="email"
                 placeholder="Your Email"
-                className="w-full bg-transparent border border-divider px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon"
+                className={`w-full bg-transparent border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 ${
+                  isBackendMode
+                    ? 'border-green-400 text-white placeholder-white focus:ring-green-400 font-mono'
+                    : 'border-divider text-white placeholder-gray-400 focus:ring-neon'
+                }`}
                 required
               />
               <textarea
                 rows={5}
                 placeholder="Your Message"
-                className="w-full bg-transparent border border-divider px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon"
+                className={`w-full bg-transparent border px-4 py-3 rounded-lg focus:outline-none focus:ring-2 ${
+                  isBackendMode
+                    ? 'border-green-400 text-white placeholder-white focus:ring-green-400 font-mono'
+                    : 'border-divider text-white placeholder-gray-400 focus:ring-neon'
+                }`}
                 required
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-secondaryBlue to-primaryBlue text-white font-semibold py-3 px-8 rounded-xl hover:scale-105 transition transform duration-300 shadow-lg"
+                className={`py-3 px-8 rounded-xl font-semibold shadow-lg transition transform duration-300 ${
+                  isBackendMode
+                    ? 'bg-green-600 hover:bg-green-500 text-black'
+                    : 'bg-gradient-to-r from-secondaryBlue to-primaryBlue text-white hover:scale-105'
+                }`}
               >
                 Send Message
               </button>

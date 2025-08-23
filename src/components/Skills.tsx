@@ -94,7 +94,7 @@ export default function SkillsTools() {
 </motion.h2>
 
 
-          {/* Tabs */}
+      
           <nav className="flex flex-wrap gap-4 justify-center">
             {categories.map((cat, idx) => (
               <button
@@ -115,7 +115,7 @@ export default function SkillsTools() {
             ))}
           </nav>
 
-          {/* Skills Grid */}
+       
           <AnimatePresence mode="wait">
             <motion.div
               key={currentCategory.key}
@@ -139,7 +139,7 @@ export default function SkillsTools() {
                       }
                     `}
                   >
-                    {/* Icons retain their original color */}
+                   
                     <Icon size={36} className={`mb-3 ${skill.color}`} />
                     <p
                       className={`text-sm text-center font-medium mb-2 ${
