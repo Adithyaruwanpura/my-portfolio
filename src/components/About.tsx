@@ -28,12 +28,12 @@ export default function About() {
       id="about"
       className="relative w-full min-h-screen px-6 md:px-20 py-24 overflow-hidden"
     >
-      {/* Background Canvas */}
+   
       <div className="absolute inset-0 rounded-3xl pointer-events-none -z-10">
         <BackgroundCanvas />
       </div>
 
-      {/* Main Container */}
+     
       <div
         className={`relative rounded-3xl px-8 py-12 transition-colors duration-500 ${
           isBackendMode
@@ -43,7 +43,7 @@ export default function About() {
       >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
 
-          {/* Text Section */}
+      
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -98,7 +98,7 @@ export default function About() {
             </p>
           </motion.div>
 
-          {/* Cards Section */}
+     
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -129,7 +129,7 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Timeline */}
+       
         <TimelineSection />
       </div>
     </section>

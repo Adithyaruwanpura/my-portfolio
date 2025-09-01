@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { FaGraduationCap, FaTools, FaPaintBrush, FaLaptopCode, FaRocket } from 'react-icons/fa';
-import { useMode } from '../context/ModeContext'; // adjust import path
+import { useMode } from '../context/ModeContext'; 
 
 const timelineData = [
   {
@@ -53,7 +53,7 @@ export default function Timeline() {
       </h2>
 
       <div className="relative max-w-6xl mx-auto flex justify-between items-center px-10">
-        {/* Dark Track Line */}
+       
         <div
           className={`absolute top-1/2 left-0 right-0 h-1 rounded-full -translate-y-1/2 ${
             isBackendMode ? 'bg-green-900' : 'bg-white opacity-20'
@@ -61,7 +61,7 @@ export default function Timeline() {
           style={{ zIndex: 0 }}
         ></div>
 
-        {/* Progress Fill */}
+       
         <motion.div
           className={`absolute top-1/2 left-0 h-1 rounded-full -translate-y-1/2 ${
             isBackendMode ? 'bg-green-600' : 'bg-gradient-to-r from-neon to-primaryBlue'
@@ -72,7 +72,7 @@ export default function Timeline() {
           style={{ zIndex: 1 }}
         />
 
-        {/* Timeline Points */}
+     
         {timelineData.map((item, index) => (
           <div
             key={index}
@@ -80,7 +80,7 @@ export default function Timeline() {
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            {/* Year */}
+           
             <span
               className={`text-sm mb-2 text-white ${
                 isBackendMode ? 'font-mono' : ''
@@ -89,7 +89,7 @@ export default function Timeline() {
               {item.year}
             </span>
 
-            {/* Icon Circle */}
+          
             <motion.div
               whileHover={{
                 scale: 1.15,
@@ -107,7 +107,7 @@ export default function Timeline() {
               {item.icon}
             </motion.div>
 
-            {/* Card Popup */}
+    
             <AnimatePresence>
               {hoveredIndex === index && (
                 <motion.div
