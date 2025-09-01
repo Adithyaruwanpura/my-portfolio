@@ -38,7 +38,7 @@ export default function Contact() {
 
       <div
         className={`relative rounded-3xl px-8 py-12 shadow-lg transition-colors duration-500 ${
-          isBackendMode ? 'bg-[#0A0A23] text-white font-mono' : 'bg-bgNavy text-white'
+          isBackendMode    ? 'bg-gradient-to-b from-[#0A0A23] to-[#000000] text-white font-mono' : 'bg-bgNavy text-white'
         }`}
       >
         <div className="max-w-6xl mx-auto space-y-16">

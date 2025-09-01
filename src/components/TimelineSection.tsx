@@ -42,7 +42,7 @@ export default function Timeline() {
 
   return (
     <section
-      className={`w-full py-16 px-4 md:px-12 ${
+      className={`w-full py-16 px-4 md:px-12  bg-transparent ${
         isBackendMode ? 'bg-[#0A0A23] text-green-400' : 'bg-bgNavy text-white'
       }`}
     >

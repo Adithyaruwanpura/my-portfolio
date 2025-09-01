@@ -43,35 +43,37 @@ export default function Projects() {
       id="projects"
       className="relative w-full min-h-screen px-6 md:px-20 py-24 overflow-hidden"
     >
-   
+  
       <div className="absolute inset-y-0 left-6 right-6 md:left-20 md:right-20 rounded-3xl pointer-events-none -z-10">
         <BackgroundCanvas />
       </div>
 
-    
+     
       <div
-        className={`relative rounded-3xl px-8 py-12 transition-colors duration-500 ${
-          isBackendMode ? 'bg-[#0A0A23] text-white' : 'bg-bgNavy text-white'
-        }`}
+        className={`relative rounded-3xl px-8 py-12 transition-colors duration-500
+          ${isBackendMode
+            ? 'bg-gradient-to-b from-[#0A0A23] to-[#000000] text-green-400 font-mono'
+            : 'bg-bgNavy text-white'
+          }`}
       >
         <div className="max-w-7xl mx-auto space-y-16">
-        
-         <motion.h2
-  initial={{ opacity: 0, y: -30 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  className={`text-4xl md:text-5xl font-bold text-center drop-shadow-lg ${
-    isBackendMode ? 'text-green-400 font-mono' : 'text-titleText'
-  }`}
->
-  My{' '}
-  <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-neon'}>
-    Projects
-  </span>
-</motion.h2>
+          
+          
+          <motion.h2
+            initial={{ opacity: 0, y: -30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className={`text-4xl md:text-5xl font-bold text-center drop-shadow-lg ${
+              isBackendMode ? 'text-green-400 font-mono' : 'text-titleText'
+            }`}
+          >
+            My{' '}
+            <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-neon'}>
+              Projects
+            </span>
+          </motion.h2>
 
-
-        
+         
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {projects.map((project, index) => (
               <motion.div
@@ -79,18 +81,18 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
-                className={`group relative rounded-2xl overflow-hidden shadow-md backdrop-blur-md transition-all duration-300 ${
-                  isBackendMode
+                className={`group relative rounded-2xl overflow-hidden shadow-md backdrop-blur-md transition-all duration-300
+                  ${isBackendMode
                     ? 'bg-[#101225] text-green-400 font-mono shadow-green-700/40 hover:shadow-green-500/60'
                     : 'bg-[#0A0A23]/70 border border-divider shadow-lg hover:shadow-[0_0_20px_rgba(0,216,255,0.3)]'
-                }`}
+                  }`}
               >
-       
-                { !isBackendMode && (
+              
+                {!isBackendMode && (
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon to-transparent opacity-0 group-hover:opacity-100 animate-pulse"></div>
                 )}
 
-                
+               
                 <div className="relative">
                   <img
                     src={project.image}
@@ -99,13 +101,11 @@ export default function Projects() {
                       isBackendMode ? 'brightness-90' : ''
                     }`}
                   />
-                 
                   {!isBackendMode && (
                     <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
                   )}
                 </div>
 
-                
                 <div className="p-6 space-y-4">
                   <h3
                     className={`text-xl font-semibold ${
@@ -116,19 +116,20 @@ export default function Projects() {
                   </h3>
                   <p
                     className={`text-sm ${
-                      isBackendMode ? 'text-white font-mono' : 'text-textMain'
+                      isBackendMode ? 'text-green-300 font-mono' : 'text-textMain'
                     }`}
                   >
                     {project.description}
                   </p>
 
+                  
                   <div className="flex flex-wrap gap-2 text-sm">
                     {project.tags.map((tag, idx) => (
                       <span
                         key={idx}
                         className={`px-2 py-1 rounded-full text-xs ${
                           isBackendMode
-                            ? 'bg-green-800 text-green-300 font-mono'
+                            ? 'bg-green-900/40 text-green-300 border border-green-700 font-mono'
                             : 'bg-divider text-white'
                         }`}
                       >
@@ -138,7 +139,6 @@ export default function Projects() {
                   </div>
 
                 
-
                   <div className="pt-4 flex gap-4">
                     {project.live && (
                       <a

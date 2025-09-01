@@ -70,29 +70,29 @@ export default function SkillsTools() {
       <div
         className={`relative rounded-3xl px-8 py-12 shadow-lg transition-colors duration-500 ${
           isBackendMode
-            ? 'bg-[#0A0A23] text-white font-mono'
+            ? 'bg-gradient-to-b from-[#0A0A23] to-[#000000] text-white font-mono'
             : 'bg-bgNavy text-white'
         }`}
       >
         <div className="max-w-7xl mx-auto flex flex-col items-center space-y-12">
-         <motion.h2
-  initial={{ opacity: 0, y: -30 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  className={`text-4xl md:text-5xl font-bold drop-shadow-lg ${
-    isBackendMode ? 'text-green-400 font-mono' : 'text-titleText'
-  }`}
->
-  My{' '}
-  <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-neon'}>
-    Skills
-  </span>{' '}
-  &{' '}
-  <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-secondaryBlue'}>
-    Tools
-  </span>
-</motion.h2>
-
+          
+          <motion.h2
+            initial={{ opacity: 0, y: -30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className={`text-4xl md:text-5xl font-bold drop-shadow-lg ${
+              isBackendMode ? 'text-green-400 font-mono' : 'text-titleText'
+            }`}
+          >
+            My{' '}
+            <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-neon'}>
+              Skills
+            </span>{' '}
+            &{' '}
+            <span className={isBackendMode ? 'text-green-400 font-mono' : 'text-secondaryBlue'}>
+              Tools
+            </span>
+          </motion.h2>
 
       
           <nav className="flex flex-wrap gap-4 justify-center">
@@ -139,7 +139,6 @@ export default function SkillsTools() {
                       }
                     `}
                   >
-                   
                     <Icon size={36} className={`mb-3 ${skill.color}`} />
                     <p
                       className={`text-sm text-center font-medium mb-2 ${
