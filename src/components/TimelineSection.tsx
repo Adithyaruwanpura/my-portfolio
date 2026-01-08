@@ -9,22 +9,22 @@ const timelineData = [
   {
     year: '2024',
     icon: <FaGraduationCap />,
-    title: 'Started Software Engineering Degree (Batch 24.1)',
+    title: 'Started Software Engineering Degree @NSBM University',
   },
   {
     year: '2024',
     icon: <FaTools />,
-    title: 'Built First Web System – Auto Cars',
+    title: 'Built First Web System – Auto Cars - Java',
   },
   {
     year: '2024',
     icon: <FaPaintBrush />,
-    title: 'Completed Figma to Lottie Course',
+    title: 'Completed and following Figma Course',
   },
   {
     year: '2025',
     icon: <FaLaptopCode />,
-    title: 'Interned as Front-End Developer',
+    title: 'Interned as Fullstack Developer',
   },
   {
     year: 'Future',
@@ -49,7 +49,7 @@ export default function Timeline() {
       <h2
         className={`text-3xl font-bold text-center mb-12 text-white`}
       >
-        🚀 My Journey
+         My Journey
       </h2>
 
       <div className="relative max-w-6xl mx-auto flex justify-between items-center px-10">
