@@ -54,3 +54,7 @@ canvas {
 .animate-bounce-slow {
   animation: bounce-slow 2s infinite;
 }
+
+html {
+  scroll-behavior: smooth;
+}
