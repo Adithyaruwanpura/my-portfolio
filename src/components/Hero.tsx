@@ -1,7 +1,5 @@
 'use client';
 
-import BackgroundCanvas from './BackgroundCanvas';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { TypeAnimation } from 'react-type-animation';
 import { useMode } from '@/context/ModeContext';
@@ -11,137 +9,86 @@ export default function Hero() {
   const isBackendMode = mode === 'backend';
 
   return (
-    <section id="home" className="relative w-full min-h-screen overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <BackgroundCanvas />
-      </div>
+    <section
+      id="home"
+      className="relative w-full min-h-screen flex items-center justify-center px-6 md:px-20 py-24 bg-[#0A0A23]"
+    >
+      {/* SIMPLE BACKGROUND (FAST) */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0A0A23] to-black" />
 
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-6 py-24 md:px-20">
-        <div
-          className={`w-full max-w-7xl rounded-2xl shadow-lg border p-10 md:p-16 transition-all duration-500 ${isBackendMode
-              ? 'bg-transparent border-green-500/40 backdrop-blur-none'
-              : 'bg-bgNavy/75 backdrop-blur-sm border-[#59C3FF]/30'
-            }`}
-        >
-          <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
+      <div className="flex flex-col items-center justify-between w-full max-w-6xl gap-12 md:flex-row">
 
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-              className="flex-1 space-y-6 text-center md:text-left"
+        {/* LEFT CONTENT */}
+        <div className="flex-1 space-y-6 text-center md:text-left">
+
+          <h1 className="text-3xl font-bold leading-tight md:text-6xl">
+            <span className="block text-lg text-gray-300 md:text-xl">
+              Hello, I’m
+            </span>
+
+            <span className={`block ${isBackendMode ? 'text-green-400' : 'text-white'}`}>
+              Adithya Ruwanpura
+            </span>
+          </h1>
+
+          {/* TYPE ANIMATION (KEPT BUT LIGHT) */}
+          <h2 className="text-lg font-semibold md:text-2xl text-cyan-300">
+            <TypeAnimation
+              sequence={[
+                'Fullstack Developer',
+                2000,
+                'UI/UX Designer',
+                2000,
+                'Creative Thinker',
+                2000,
+              ]}
+              speed={40}
+              repeat={Infinity}
+            />
+          </h2>
+
+          <p className="max-w-md mx-auto text-sm text-gray-300 md:mx-0 md:text-base">
+            Undergraduate Software Engineering student building clean, modern, and user-friendly digital experiences.
+          </p>
+
+          {/* BUTTONS */}
+          <div className="flex flex-col justify-center gap-4 sm:flex-row md:justify-start">
+
+            <a
+              href="#projects"
+              className="px-6 py-3 font-semibold text-black transition rounded-lg bg-cyan-500 hover:bg-cyan-400"
             >
-              <motion.h1
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className={`text-3xl md:text-6xl leading-tight tracking-tight ${isBackendMode ? 'text-green-400 font-mono' : ''
-                  }`}
-              >
-                <span
-                  className={`block font-light ${isBackendMode ? 'text-green-500/80' : 'text-gray-300'
-                    }`}
-                >
-                  Hello, I’m
-                </span>
-                <span
-                  className={`font-extrabold drop-shadow-md ${isBackendMode ? 'text-green-400' : 'text-neon'
-                    }`}
-                >
-                  Adithya{' '}
-                  <span className={isBackendMode ? 'text-green-400' : 'text-neon'}>
-                    Ruwanpura
-                  </span>
-                </span>
-              </motion.h1>
+              View Projects
+            </a>
 
-              <h2
-                className={`text-xl md:text-2xl font-semibold ${isBackendMode ? 'text-green-400 font-mono' : 'text-textMain'
-                  }`}
-              >
-                <TypeAnimation
-                  sequence={[
-                    'Fullstack Developer', 2000,
-                    'UI/UX Designer', 2000,
-                    'Creative Thinker', 2000,
-                    'Tech Enthusiast', 2000,
-                  ]}
-                  speed={50}
-                  repeat={Infinity}
-                  className={isBackendMode ? 'text-green-400' : 'text-white'}
-                />
-              </h2>
-
-              <p
-                className={`text-base max-w-md mx-auto md:mx-0 leading-relaxed ${isBackendMode ? 'text-green-300 font-mono' : 'text-textMain'
-                  }`}
-              >
-                Undergraduate Software Engineering student with a passion for building clean, user-friendly digital experiences — where design meets functionality.
-              </p>
-
-              <div className="flex justify-center gap-4 mt-6 md:justify-start">
-                <motion.a
-                  href="#projects"
-                  whileHover={{
-                    y: -3,
-                    boxShadow: isBackendMode
-                      ? '0 0 20px rgba(34,197,94,0.5)'
-                      : '0 0 20px rgba(2, 76, 170, 0.5)',
-                  }}
-                  className={`px-6 py-3 rounded-lg transition-all duration-300 shadow-md ${isBackendMode
-                      ? 'bg-green-600 hover:bg-green-500 text-black font-mono'
-                      : 'bg-primaryBlue hover:bg-hoverBlue text-white'
-                    }`}
-                >
-                  View Projects
-                </motion.a>
-                <motion.a
-                  href="/assets/Adithya Ruwanpura_internCV.pdf"
-                  download
-                  whileHover={{ y: -3 }}
-                  className={`px-6 py-3 rounded-lg transition-all duration-300 border ${isBackendMode
-                      ? 'border-green-400 text-green-400 hover:bg-green-500 hover:text-black font-mono'
-                      : 'border-neon text-white hover:bg-hoverBlue'
-                    }`}
-                >
-                  Download Resume
-                </motion.a>
-              </div>
-            </motion.div>
-
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="relative flex items-center justify-center flex-1"
+            <a
+              href="/assets/Adithya_Ruwanpura_CV.pdf"
+              download
+              className="px-6 py-3 text-white transition border rounded-lg border-cyan-400 hover:bg-cyan-500/10"
             >
-              <div
-                className="absolute w-[520px] h-[520px] rounded-full border-[25px] z-0 transition-all duration-500"
-                style={{
-                  borderColor: isBackendMode ? '#22c55e' : '#00D8FF',
-                  boxShadow: isBackendMode
-                    ? 'inset 0 0 20px #22c55e'
-                    : 'inset 0 0 30px #00D8FF, 0 0 40px #00D8FF',
-                }}
-              />
-              <motion.div
-                whileHover={{ scale: 1.05, rotate: 1 }}
-                transition={{ type: 'spring', stiffness: 200 }}
-                className="relative w-[380px] md:w-[500px] z-10 "
-              >
-                <Image
-                  src="/Adithya1.png"
-                  alt="Adithya Ruwanpura"
-                  width={500}
-                  height={500}
-                  className="object-contain w-full h-auto"
-                  priority
-                />
-              </motion.div>
-            </motion.div>
+              Download CV
+            </a>
           </div>
         </div>
+
+        {/* RIGHT IMAGE (OPTIMIZED) */}
+        <div className="flex justify-center flex-1">
+          <div className="relative w-[260px] md:w-[380px]">
+
+            {/* SIMPLE BORDER EFFECT (NO GLOW ANIMATION) */}
+            <div className="absolute inset-0 border-4 rounded-full border-cyan-400/40" />
+
+            <Image
+              src="/Adithya1.png"
+              alt="Adithya"
+              width={500}
+              height={500}
+              priority
+              className="object-cover rounded-full"
+            />
+          </div>
+        </div>
+
       </div>
     </section>
   );

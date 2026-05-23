@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
-import { useMode } from '@/context/ModeContext';
+import { useEffect, useRef } from 'react';
 
 interface Particle {
   x: number;
@@ -12,119 +11,120 @@ interface Particle {
 
 export default function BackgroundCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { mode } = useMode();
-  const isBackendMode = mode === 'backend';
-
-  const particles: Particle[] = [];
-  const numParticles = 100;
-  const maxDistance = 120;
-  const radius = 2;
-  const mouse = { x: -1000, y: -1000 };
+  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!canvas || !ctx) return;
+    if (!canvas) return;
 
-    const resizeCanvas = () => {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // 🚀 MOBILE DETECTION (DISABLE HEAVY EFFECT)
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return; // HUGE PERFORMANCE WIN
+
+    const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    // ⚡ LOWER PARTICLES FOR PERFORMANCE
+    const numParticles = isMobile ? 30 : 70;
+
+    const particles: Particle[] = [];
 
     for (let i = 0; i < numParticles; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1,
-        vy: (Math.random() - 0.5) * 1,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
       });
     }
+
+    const mouse = { x: -9999, y: -9999 };
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
+
     window.addEventListener('mousemove', handleMouseMove);
 
-    const animate = () => {
-      if (isBackendMode) {
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(0, '#0A0A23');
-        gradient.addColorStop(1, '#000000');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
+    const maxDistance = 110;
+    const radius = 2;
 
-      particles.forEach((p, i) => {
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
         p.x += p.vx;
         p.y += p.vy;
 
+        // bounce edges
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
+        // mouse interaction (lightweight)
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (!isBackendMode && dist < 80) {
-          p.vx -= dx * 0.0005;
-          p.vy -= dy * 0.0005;
+
+        if (dist < 80) {
+          p.x -= dx * 0.002;
+          p.y -= dy * 0.002;
         }
 
+        // draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-        if (isBackendMode) {
-          ctx.fillStyle = '#1E293B';
-          ctx.shadowBlur = 0;
-        } else {
-          ctx.fillStyle = '#59C3FF';
-          ctx.shadowColor = '#59C3FF';
-          ctx.shadowBlur = 10;
-        }
+        ctx.fillStyle = '#59C3FF';
         ctx.fill();
-        ctx.closePath();
 
-        if (!isBackendMode) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+        // ⚡ LIMIT CONNECTIONS (OPTIMIZED LOOP)
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
 
-            if (distance < maxDistance) {
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = `rgba(89, 195, 255, ${1 - distance / maxDistance})`;
-              ctx.lineWidth = 1;
-              ctx.shadowColor = '#59C3FF';
-              ctx.shadowBlur = 4;
-              ctx.stroke();
-              ctx.shadowBlur = 0;
-              ctx.closePath();
-            }
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(89,195,255,${1 - distance / maxDistance})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
           }
         }
-      });
+      }
 
-      requestAnimationFrame(animate);
+      animationRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
+      window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', resizeCanvas);
+
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
-  }, [isBackendMode]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"
+      className="fixed inset-0 z-0 w-full h-full pointer-events-none"
     />
   );
 }
